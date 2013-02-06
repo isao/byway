@@ -29,7 +29,7 @@ Byway.prototype.of = function(str) {
 };
 
 function compile(routes) {
-    var reified = [];
+    var out = [];
 
     function perRoute(route) {
         var pattern;
@@ -48,12 +48,11 @@ function compile(routes) {
             route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, partnames);
 
         route.regex = new RegExp(pattern);
-        reified.push(route);
+        out.push(route);
     }
 
     routes.forEach(perRoute);
-    console.log(reified);
-    return reified;
+    return out;
 }
 
 module.exports = Byway;
