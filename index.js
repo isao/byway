@@ -6,42 +6,15 @@
 /*jshint node:true*/
 'use strict';
 
-function Route(routes) {
+var SYMBOLS = /([\/.+\^$(){}\[\]])/g,
+    NAME_RE = /:(\w+)/g;
+
+
+function Byway(routes) {
     this.routes = compile(routes);
 }
 
-function compile(routes) {
-    var reified = [],
-        SYMBOLS = /([\/.+\^$(){}\[\]])/g,
-        NAME_RE = /:(\w+)/g;
-
-    function perRoute(route) {
-        var pattern;
-        route.parts = []; //todo
-
-        if(!route.param) {
-            route.param = [];
-        }
-
-        function replaceCb(ignored, name) {
-            route.parts.push(name);
-            return '(\\w+)';
-        }
-
-        pattern = route.isregex ? route.pattern :
-            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, replaceCb);
-
-        route.regex = new RegExp(pattern);
-        reified.push(route);
-    }
-
-    routes.forEach(perRoute);
-    console.log(reified);
-    return reified;
-}
-
-Route.prototype.of =
-Route.prototype.given = function (str) {
+Byway.prototype.of = function(str) {
     var found = false;
 
     function checkRoute(route) {
@@ -55,4 +28,32 @@ Route.prototype.given = function (str) {
     return found;
 };
 
-module.exports = Route;
+function compile(routes) {
+    var reified = [];
+
+    function perRoute(route) {
+        var pattern;
+        route.parts = []; //todo
+
+        if(!route.param) {
+            route.param = [];
+        }
+
+        function partnames(ignored, name) {
+            route.parts.push(name);
+            return '(\\w+)';
+        }
+
+        pattern = route.isregex ? route.pattern :
+            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, partnames);
+
+        route.regex = new RegExp(pattern);
+        reified.push(route);
+    }
+
+    routes.forEach(perRoute);
+    console.log(reified);
+    return reified;
+}
+
+module.exports = Byway;
