@@ -1,18 +1,11 @@
 var test = require('tape'),
     Route = require('./');
 
-test('1', function(t) {
+test('matching routes', function(t) {
     var route,
         config = [
-            {
-                "pattern": "/modules/:modname/:filename.json",
-                "isregex": false,
-                "action": "modconfig"
-            },
-            {
-                "pattern": "/mojits/:mojitname/:controller.:affinity.js",
-                "action": "controller"
-            }
+            {"pattern": "/modules/:modname/:filename.json"},
+            {"pattern": "/mojits/:mojitname/:controller.:affinity.js"}
         ];
 
     route = new Route(config);
