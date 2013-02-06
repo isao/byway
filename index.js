@@ -16,6 +16,7 @@ function compile(routes) {
         NAME_RE = /:(\w+)/g;
 
     function perRoute(route) {
+        var pattern;
         route.parts = []; //todo
 
         if(!route.param) {
@@ -27,16 +28,17 @@ function compile(routes) {
             return '(\\w+)';
         }
 
-        route.regex = new RegExp(
-            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, replaceCb));
+        pattern = route.isregex ? route.pattern :
+            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, replaceCb);
 
+        route.regex = new RegExp(pattern);
         reified.push(route);
     }
 
     routes.forEach(perRoute);
     console.log(reified);
     return reified;
-};
+}
 
 Route.prototype.of =
 Route.prototype.given = function (str) {

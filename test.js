@@ -6,6 +6,7 @@ test('1', function(t) {
         config = [
             {
                 "pattern": "/modules/:modname/:filename.json",
+                "isregex": false,
                 "action": "modconfig"
             },
             {
