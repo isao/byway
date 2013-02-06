@@ -7,22 +7,20 @@
 'use strict';
 
 function Route(routes) {
-    //this.routes = this.compile(routes);
-    this.compile(routes);
+    this.routes = compile(routes);
 }
 
-Route.prototype.compile = function(routes) {
-    var self = this,
+function compile(routes) {
+    var reified = [],
         SYMBOLS = /([\/.+\^$(){}\[\]])/g,
         NAME_RE = /:(\w+)/g;
 
-    self.routes = [];
-    if(!self.param) {
-        self.param = [];
-    }
-
     function perRoute(route) {
-        route.parts = [];
+        route.parts = []; //todo
+
+        if(!route.param) {
+            route.param = [];
+        }
 
         function replaceCb(ignored, name) {
             route.parts.push(name);
@@ -32,10 +30,13 @@ Route.prototype.compile = function(routes) {
         route.regex = new RegExp(
             route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, replaceCb));
 
-        self.routes.push(route);
+        reified.push(route);
     }
+
     routes.forEach(perRoute);
-}
+    console.log(reified);
+    return reified;
+};
 
 Route.prototype.of =
 Route.prototype.given = function (str) {
