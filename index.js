@@ -8,7 +8,7 @@
 
 var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
     NAME_ID = /:(\w+)/g,           //for extracting :names from patterns
-    NAME_RE = '(\\w+)';            //for final regex in place of :names
+    NAME_RE = '(\\w+)';            //for final regex, to use in place of :names
 
 
 function makeout(names, vals) {
@@ -45,7 +45,7 @@ function regexify(route) {
 }
 
 function compile(routes) {
-    routes.forEach(regexify);
+    routes.forEach(regexify); //todo: loop, validate/normalize, copy
     return routes;
 }
 
