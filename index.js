@@ -6,8 +6,8 @@
 /*jshint node:true*/
 'use strict';
 
-var SYMBOLS = /([\/.+\^$(){}\[\]])/g, //symbols to escape for non-regex patterns
     NAME_RE = /:(\w+)/g;
+var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
 
 
 function Byway(routes) {
