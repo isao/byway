@@ -6,8 +6,8 @@
 /*jshint node:true*/
 'use strict';
 
-    NAME_RE = /:(\w+)/g;
 var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
+    NAME_RE = /:(\w+)/g;           //valid :names
 
 
 function Byway(routes) {
@@ -47,7 +47,7 @@ function compile(routes) {
         pattern = route.isregex ? route.pattern :
             route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, partnames);
 
-        route.regex = new RegExp(pattern);
+        route.regex = new RegExp(pattern, 'i');
         out.push(route);
     }
 
