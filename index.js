@@ -11,6 +11,44 @@ var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
     NAME_RE = '(\\w+)';            //for final regex in place of :names
 
 
+function makeout(names, vals) {
+    var out;
+    if(names.length) {
+        out = {};
+        names.forEach(function copy(name, i) {
+            out[name] = vals[i];
+        });
+    } else { //no names, so pattern was a regex-route
+        out = vals.slice(0);
+    }
+    return out;
+}
+
+function namer(route) {
+    var pattern = route.pattern.replace(SYMBOLS, '\\$1');
+    function partnamer(ignored, name) {
+        route.names.push(name);
+        return NAME_RE;
+    }
+    return pattern.replace(NAME_IN, partnamer);
+}
+
+function regexify(route) {
+    var pattern = route.pattern;
+    route.names = []; //capture names; empty array signifies regex-route
+    if(pattern instanceof RegExp) { //possible pattern values:
+        route.regex = pattern;      // 1. literal RegExp
+                                    // 2. regex-route string
+    } else {                        // 3. name-route string
+        route.regex = new RegExp(route.isregex ? pattern : namer(route), 'i');
+    }
+}
+
+function compile(routes) {
+    routes.forEach(regexify);
+    return routes;
+}
+
 function Byway(routes) {
     this.routes = compile(routes);
 }
@@ -23,51 +61,13 @@ Byway.prototype.of = function(str) {
             found = {
                 'input': found.input,
                 'param': route.param || [],
-                'parts': parter(route.names, found.slice(1))
+                'parts': makeout(route.names, found.slice(1))
             };
             return true;
         }
     }
-
     this.routes.some(checkRoute);
     return found;
 };
-
-function parter(names, vals) {
-    var out;
-    if(names.length) {
-        out = {};
-        names.forEach(function copy(name, i) {
-            out[name] = vals[i];
-        });
-    } else { //pattern was a regex, so no names
-        out = vals.slice(0);
-    }
-    return out;
-}
-
-function regexify(route) {
-    var pattern = route.pattern.replace(SYMBOLS, '\\$1');
-    function partnamer(ignored, name) {
-        route.names.push(name);
-        return NAME_RE;
-    }
-    return pattern.replace(NAME_IN, partnamer);
-}
-
-function compile(routes) {
-    function perRoute(route) {
-        route.names = [];
-        if(route.pattern instanceof RegExp) {
-            route.regex = route.pattern;
-        } else {
-            route.regex = new RegExp(
-                route.isregex ? route.pattern : regexify(route), 'i'
-            );
-        }
-    }
-    routes.forEach(perRoute);
-    return routes;
-}
 
 module.exports = Byway;
