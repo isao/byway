@@ -6,7 +6,7 @@
 /*jshint node:true*/
 'use strict';
 
-var SYMBOLS = /([\/.+\^$(){}\[\]])/g,
+var SYMBOLS = /([\/.+\^$(){}\[\]])/g, //symbols to escape for non-regex patterns
     NAME_RE = /:(\w+)/g;
 
 
@@ -33,14 +33,14 @@ function compile(routes) {
 
     function perRoute(route) {
         var pattern;
-        route.parts = []; //todo
+        route.names = []; //todo
 
         if(!route.param) {
             route.param = [];
         }
 
         function partnames(ignored, name) {
-            route.parts.push(name);
+            route.names.push(name);
             return '(\\w+)';
         }
 
