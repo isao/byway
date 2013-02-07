@@ -9,8 +9,8 @@
     "tape": "~0.2.2"
   },
   "scripts": {
-    "test": "node tests/*.js",
-    "cover": "istanbul cover --dir reports/coverage tests/*.js",
+    "test": "tests/runner tests/*.js",
+    "cover": "istanbul cover --dir reports/coverage tests/runner tests/*.js",
     "plato": "plato -d reports/plato index.js"
   },
   "repository": {
