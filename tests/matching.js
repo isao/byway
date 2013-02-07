@@ -1,7 +1,7 @@
 var test = require('tape'),
     Byway = require('../');
 
-test('match :routes', function(t) {
+test('matched :routes', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
         byway = new Byway(config);
 
@@ -72,7 +72,7 @@ test('match ^anchored$ ^/modules/:modname/:filename.json$', function(t) {
     t.end();
 });
 
-test('matched regexes -- beware the crazy escaping!', function(t) {
+test('match regexes -- beware the crazy escaping!', function(t) {
     var config = [{"pattern": "\\/modules\\/(\\w+)\\/(\\w+).json", "isregex": true}],
     byway = new Byway(config);
 
@@ -80,7 +80,7 @@ test('matched regexes -- beware the crazy escaping!', function(t) {
     t.end();
 });
 
-test('literal regex is ok too, save yourself some backslashes', function(t) {
+test('literal regex work, save yourself some backslashes', function(t) {
     var config = [{"pattern": /\/modules\/(\w+)\/(\w+).json$/, "isregex": null}],
     byway = new Byway(config);
 

@@ -86,8 +86,13 @@ test('param is an array, if source was falsey', function(t) {
 
     config = [{pattern:'app/modules/:module/:file.:ext$', param:undefined}];
     byway = new Byway(config);
-
     actual = byway.of(uri);
     t.same(actual.param, []);
+
+    config = [{pattern:'app/modules/:module/:file.:ext$'}];
+    byway = new Byway(config);
+    actual = byway.of(uri);
+    t.same(actual.param, []);
+
     t.end();
 });
