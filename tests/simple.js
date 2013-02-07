@@ -1,7 +1,7 @@
 var test = require('tape'),
     Byway = require('../');
 
-test('match :routes', function(t) {
+test('1 match :routes', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
         byway = new Byway(config);
 
@@ -12,7 +12,7 @@ test('match :routes', function(t) {
     t.end();
 });
 
-test('unmatched :routes', function(t) {
+test('2 unmatched :routes', function(t) {
     var config = [
             {"pattern": "/modules/:modname/:filename.json"},
             {"pattern": "/mojits/:mojitname/:controller.:affinity.js"}
@@ -26,7 +26,7 @@ test('unmatched :routes', function(t) {
     t.end();
 });
 
-test('match /modules/:modname/:filename.json', function(t) {
+test('3 match /modules/:modname/:filename.json', function(t) {
     var config = [{"pattern": "/modules/:modname/:filename.json"}]
         byway = new Byway(config);
 
@@ -38,7 +38,7 @@ test('match /modules/:modname/:filename.json', function(t) {
     t.end();
 });
 
-test('match anchored$ /modules/:modname/:filename.json$', function(t) {
+test('4 match anchored$ /modules/:modname/:filename.json$', function(t) {
     var config = [{"pattern": "/modules/:modname/:filename.json$"}]
         byway = new Byway(config);
 
@@ -50,7 +50,7 @@ test('match anchored$ /modules/:modname/:filename.json$', function(t) {
     t.end();
 });
 
-test('match ^anchored ^/modules/:modname/:filename.json', function(t) {
+test('5 match ^anchored ^/modules/:modname/:filename.json', function(t) {
     var config = [{"pattern": "^/modules/:modname/:filename.json"}]
         byway = new Byway(config);
 
@@ -62,8 +62,8 @@ test('match ^anchored ^/modules/:modname/:filename.json', function(t) {
     t.end();
 });
 
-test('match ^anchored$ ^/modules/:modname/:filename.json$', function(t) {
-    var config = [{"pattern": "^/modules/:modname/:filename.json"}]
+test('6 match ^anchored$ ^/modules/:modname/:filename.json$', function(t) {
+    var config = [{"pattern": "^/modules/:modname/:filename.json$"}]
         byway = new Byway(config);
 
     t.ok(byway.of('/modules/mymod/config.json'));
@@ -72,12 +72,20 @@ test('match ^anchored$ ^/modules/:modname/:filename.json$', function(t) {
     t.end();
 });
 
-test('matched regexes -- beware the crazy escaping!', function(t) {
-    var byway,
-        config = [{"pattern": "\\/modules\\/(\\w+)\\/(\\w+).json", "isregex": true}];
-
+test('7 matched regexes -- beware the crazy escaping!', function(t) {
+    var config = [{"pattern": "\\/modules\\/(\\w+)\\/(\\w+).json", "isregex": true}],
     byway = new Byway(config);
+
     t.ok(byway.of('abc/modules/mymod/config.json'));
+    t.end();
+});
+
+test('8 configs get changed', function(t) {
+    var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
+        expected = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
+        byway =  new Byway(config);
+
+    t.notSame(config, expected);
     t.end();
 });
 
