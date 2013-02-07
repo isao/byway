@@ -1,4 +1,4 @@
-Byway [![Build Status](https://travis-ci.org/isao/byway.png)](https://travis-ci.org/isao/byway)
+byway [![Build Status](https://travis-ci.org/isao/byway.png)](https://travis-ci.org/isao/byway)
 =====
 
 Match a string by :sinatra/:express style named-params, or regex, and get something back.
