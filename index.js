@@ -7,7 +7,8 @@
 'use strict';
 
 var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
-    NAME_RE = /:(\w+)/g;           //valid :names
+    NAME_IN = /:(\w+)/g,           //regex to extract :names from patterns
+    NAME_RE = '(\\w+)';            //string for compiled regex for :names
 
 
 function Byway(routes) {
@@ -15,44 +16,28 @@ function Byway(routes) {
 }
 
 Byway.prototype.of = function(str) {
-    var found = false;
-
-    function checkRoute(route) {
-        if(route.regex.test(str)) {
-            found = route;
-            return true;
-        }
-    }
-
-    this.routes.some(checkRoute);
-    return found;
+    return this.routes.some(function checkRoute(route) {
+        return route.regex.exec(str) ? route : false;
+    });
 };
 
 function compile(routes) {
-    var out = [];
-
     function perRoute(route) {
         var pattern;
         route.names = []; //todo
 
-        if(!route.param) {
-            route.param = [];
-        }
-
         function partnames(ignored, name) {
             route.names.push(name);
-            return '(\\w+)';
+            return NAME_RE;
         }
 
         pattern = route.isregex ? route.pattern :
-            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_RE, partnames);
+            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_IN, partnames);
 
         route.regex = new RegExp(pattern, 'i');
-        out.push(route);
     }
-
     routes.forEach(perRoute);
-    return out;
+    return routes;
 }
 
 module.exports = Byway;
