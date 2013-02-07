@@ -8,7 +8,7 @@
 
 var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
     NAME_IN = /:(\w+)/g,           //regex to extract :names from patterns
-    NAME_RE = '(\\w+)';            //string for compiled regex for :names
+    NAME_RE = '(\\w+)';            //string for :name matching in final regex
 
 
 function Byway(routes) {
