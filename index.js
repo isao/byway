@@ -7,7 +7,7 @@
 'use strict';
 
 var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
-    NAME_IN = /:(\w+)/g,           //for extracting :names from patterns
+    NAME_ID = /:(\w+)/g,           //for extracting :names from patterns
     NAME_RE = '(\\w+)';            //for final regex in place of :names
 
 
@@ -30,14 +30,14 @@ function namer(route) {
         route.names.push(name);
         return NAME_RE;
     }
-    return pattern.replace(NAME_IN, partnamer);
+    return pattern.replace(NAME_ID, partnamer);
 }
 
 function regexify(route) {
     var pattern = route.pattern;
     route.names = []; //capture names; empty array signifies regex-route
     if(pattern instanceof RegExp) { //possible pattern values:
-        route.regex = pattern;      // 1. literal RegExp
+        route.regex = pattern;      // 1. RegExp
                                     // 2. regex-route string
     } else {                        // 3. name-route string
         route.regex = new RegExp(route.isregex ? pattern : namer(route), 'i');
