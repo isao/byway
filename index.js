@@ -23,7 +23,7 @@ Byway.prototype.of = function(str) {
             found = {
                 'input': found.input,
                 'param': route.param || [],
-                'parts': parts(route.names, found.slice(1))
+                'parts': parter(route.names, found.slice(1))
             };
             return true;
         }
@@ -33,7 +33,7 @@ Byway.prototype.of = function(str) {
     return found;
 };
 
-function parts(names, vals) {
+function parter(names, vals) {
     var out;
     if(names.length) {
         out = {};
@@ -43,24 +43,28 @@ function parts(names, vals) {
     } else { //pattern was a regex, so no names
         out = vals.slice(0);
     }
-
     return out;
+}
+
+function regexify(route) {
+    var pattern = route.pattern.replace(SYMBOLS, '\\$1');
+    function partnamer(ignored, name) {
+        route.names.push(name);
+        return NAME_RE;
+    }
+    return pattern.replace(NAME_IN, partnamer);
 }
 
 function compile(routes) {
     function perRoute(route) {
-        var pattern;
-
         route.names = [];
-        function partnamer(ignored, name) {
-            route.names.push(name);
-            return NAME_RE;
+        if(route.pattern instanceof RegExp) {
+            route.regex = route.pattern;
+        } else {
+            route.regex = new RegExp(
+                route.isregex ? route.pattern : regexify(route), 'i'
+            );
         }
-
-        pattern = route.isregex ? route.pattern :
-            route.pattern.replace(SYMBOLS, '\\$1').replace(NAME_IN, partnamer);
-
-        route.regex = new RegExp(pattern, 'i');
     }
     routes.forEach(perRoute);
     return routes;

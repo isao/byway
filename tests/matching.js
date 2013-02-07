@@ -80,13 +80,13 @@ test('matched regexes -- beware the crazy escaping!', function(t) {
     t.end();
 });
 
-// test.only('literal regex is ok too, save yourself some backslashes', function(t) {
-//     var config = [{"pattern": /\/modules\/(\w+)\/(\w+).json$/, "isregex": null}],
-//     byway = new Byway(config);
-//
-//     t.ok(byway.of('abc/modules/mymod/config.json'));
-//     t.end();
-// });
+test('literal regex is ok too, save yourself some backslashes', function(t) {
+    var config = [{"pattern": /\/modules\/(\w+)\/(\w+).json$/, "isregex": null}],
+    byway = new Byway(config);
+
+    t.ok(byway.of('abc/modules/mymod/config.json'));
+    t.end();
+});
 
 test('configs get changed', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
