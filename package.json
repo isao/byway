@@ -1,6 +1,6 @@
 {
   "name": "byway",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "yet another router; match a string by :sinatra/:express style named-params, or regex, and get something back.",
   "main": "index.js",
   "dependencies": {
