@@ -1,7 +1,7 @@
 var test = require('tape'),
     Byway = require('../');
 
-test('matched :routes', function(t) {
+test('matches simple :names', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
         byway = new Byway(config);
 
@@ -9,6 +9,25 @@ test('matched :routes', function(t) {
     t.ok(byway.of('/abc/def/mojits/foo/foo.server.js'));
     t.ok(byway.of('/mojits/foo/foo.server.js'));
     t.ok(byway.of('/mojits/_/ghi.jkl.js'));
+    t.end();
+});
+
+test('matches :names numbers and underscores', function(t) {
+    var config = [{"pattern": "/mojits/:abc_123/:12_34.:affinity.js"}],
+        byway = new Byway(config);
+
+    t.ok(byway.of('abc/mojits/foo/foo.server.js'));
+    t.ok(byway.of('/abc/def/mojits/foo/foo.server.js'));
+    t.ok(byway.of('/mojits/foo/foo.server.js'));
+    t.ok(byway.of('/mojits/_/ghi.jkl.js'));
+    t.end();
+});
+
+test.only('special regex characters in name patterns are allowed', function(t) {
+    var config = [{"pattern": "/{m+*.}[(o/)]jits/:abc/:def.:affinity.js"}],
+        byway = new Byway(config);
+
+    t.ok(byway.of('abc/{m+*.}[(o/)]jits/foo/foo.server.js'));
     t.end();
 });
 
@@ -69,30 +88,5 @@ test('match ^anchored$ ^/modules/:modname/:filename.json$', function(t) {
     t.ok(byway.of('/modules/mymod/config.json'));
     t.notok(byway.of('abc/modules/mymod/config.json'));
     t.notok(byway.of('/modules/mymod/config.json/cheezits'));
-    t.end();
-});
-
-test('match regexes -- beware the crazy escaping!', function(t) {
-    var config = [{"pattern": "\\/modules\\/(\\w+)\\/(\\w+).json", "isregex": true}],
-    byway = new Byway(config);
-
-    t.ok(byway.of('abc/modules/mymod/config.json'));
-    t.end();
-});
-
-test('literal regex work, save yourself some backslashes', function(t) {
-    var config = [{"pattern": /\/modules\/(\w+)\/(\w+).json$/, "isregex": null}],
-    byway = new Byway(config);
-
-    t.ok(byway.of('abc/modules/mymod/config.json'));
-    t.end();
-});
-
-test('configs get changed', function(t) {
-    var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
-        expected = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
-        byway =  new Byway(config);
-
-    t.notSame(config, expected);
     t.end();
 });
