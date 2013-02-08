@@ -23,7 +23,7 @@ test('matches :names numbers and underscores', function(t) {
     t.end();
 });
 
-test.only('special regex characters in name patterns are allowed', function(t) {
+test('special regex characters in name patterns are allowed', function(t) {
     var config = [{"pattern": "/{m+*.}[(o/)]jits/:abc/:def.:affinity.js"}],
         byway = new Byway(config);
 

@@ -6,10 +6,10 @@
 /*jshint node:true*/
 'use strict';
 
-var SYMBOLS = /([\/.+(){}\[\]])/g, //escape /.+(){}[] before :name conversions
-    NAME_ID = /:(\w+)/g,           //for extracting :names from patterns
-    NAME_RE = '(\\w+)';            //for final regex, to use in place of :names
-
+var SYMBOLS = /([.+*(){}\[\]\/])/g, //escape .+*(){}[]/ in name patterns
+    NAME_ID = /([:*])(\w+)/g,       //extract :names or *names from patterns
+    NAME_RE = '(\\w+)',             //for final regex, to use in place of :names
+    STAR_RE = '(.+?)';              //for final regex, to use in place of *names
 
 function makeout(names, vals) {
     var out;
@@ -26,9 +26,9 @@ function makeout(names, vals) {
 
 function namer(route) {
     var pattern = route.pattern.replace(SYMBOLS, '\\$1');
-    function partnamer(ignored, name) {
+    function partnamer(ignored, type, name) {
         route.names.push(name);
-        return NAME_RE;
+        return type === ':' ? NAME_RE : STAR_RE;
     }
     return pattern.replace(NAME_ID, partnamer);
 }
