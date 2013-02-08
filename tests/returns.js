@@ -75,6 +75,25 @@ test('param is copied, even if it’s a string', function(t) {
     t.end();
 });
 
+
+test('param is copied, even if it’s a function', function(t) {
+
+    function square(num) {
+    	return num * num;
+    }
+
+    var config = [{pattern:'app/modules/:module/:file.:ext$', param:square}],
+        byway = new Byway(config),
+        uri = '/proj/app/modules/foo/bar.js',
+        actual = byway.of(uri);
+
+    t.equal(actual.input, uri);
+    t.same(actual.param, square);
+    t.equal(actual.param(10), 100);
+    t.end();
+});
+
+
 test('param is an array, if source was falsey', function(t) {
     var config = [{pattern:'app/modules/:module/:file.:ext$', param:null}],
         byway = new Byway(config),
