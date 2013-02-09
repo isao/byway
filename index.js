@@ -27,9 +27,9 @@ function makeout(names, vals) {
 
 function namer(route) {
     var pattern = route.pattern.replace(SYMBOLS, '\\$1');
-    function partnamer(ignored, spot_or_colon, name) {
+    function partnamer(ignored, colon_or_spot, name) {
         route.names.push(name);
-        return spot_or_colon === '•' ? SPOT_RE : NAME_RE;
+        return colon_or_spot === ':' ? NAME_RE : SPOT_RE;
     }
     return pattern.replace(NAME_ID, partnamer);
 }
