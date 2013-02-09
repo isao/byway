@@ -12,6 +12,16 @@ test('matches simple :names', function(t) {
     t.end();
 });
 
+test('match •name route (i.e. want a name to capture .+? not just \\w)', function(t) {
+    var config = [{"pattern": "/archetype/•subpath/package.json"}],
+        byway = new Byway(config);
+
+    t.ok(byway.of('/archetype/a/b/c/package.json'));
+    //                        ^^^^^ gets matched by name "•subpath"
+    //                              returned object has parts.subpath:"/a/b/c"
+    t.end();
+});
+
 test('matches :names numbers and underscores', function(t) {
     var config = [{"pattern": "/mojits/:abc_123/:12_34.:affinity.js"}],
         byway = new Byway(config);

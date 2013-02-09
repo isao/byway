@@ -7,9 +7,10 @@
 'use strict';
 
 var SYMBOLS = /([.+*(){}\[\]\/])/g, //escape .+*(){}[]/ in name patterns
-    NAME_ID = /([:*])(\w+)/g,       //extract :names or *names from patterns
+    NAME_ID = /([:•])(\w+)/g,       //extract :names or *names from patterns
     NAME_RE = '(\\w+)',             //for final regex, to use in place of :names
-    STAR_RE = '(.+?)';              //for final regex, to use in place of *names
+    SPOT_RE = '(.+?)';              //for final regex, to use in place of •names
+
 
 function makeout(names, vals) {
     var out;
@@ -28,7 +29,7 @@ function namer(route) {
     var pattern = route.pattern.replace(SYMBOLS, '\\$1');
     function partnamer(ignored, type, name) {
         route.names.push(name);
-        return type === ':' ? NAME_RE : STAR_RE;
+        return type === '•' ? SPOT_RE : NAME_RE;
     }
     return pattern.replace(NAME_ID, partnamer);
 }
