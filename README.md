@@ -10,9 +10,9 @@ usage
 -----
 Starting with:
 
-        var Byway = require('byway'),
-            routes = require('someroutes'), //json, or js, that exports an array of objects
-            byway = new Byway(routes);
+    var Byway = require('byway'),
+        routes = require('someroutes'), //json, or js, that exports an array of objects
+        byway = new Byway(routes);
 
 Here the value of `routes` is an array of objects, with the following properties:
 
@@ -24,7 +24,7 @@ examples
 --------
 Once you've created a `byway` object, determine if a string matches any of the `routes.pattern`s like:
 
-        var match = byway.of(some_string);
+    var match = byway.of(some_string);
 
 `match` is false if `some_string` wasn't matched by any `routes.pattern`s. Otherwise, the return value is an object with the following properties:
 
@@ -36,7 +36,7 @@ See [`tests/examples.js`](tests/examples.js).
 
 ### named patterns
 
-        foo/bar/:somedir/booyah/:afile.:extension
+    foo/bar/:somedir/booyah/:afile.:extension
 
 n.b. unachored.
 
@@ -44,7 +44,7 @@ n.b. unachored.
 
 named spot patterns do a non-greedy match for any characters within the p
 
-        foo/•subpath/:afile.:extension
+    foo/•subpath/:afile.:extension
 
 ### regex patterns
 
@@ -53,12 +53,12 @@ can either be strings (be carefull to escape backslashes for the string and rege
 
 test
 ----
-        npm test
+    npm test
 
 Tests use James Halliday's [tape](https://github.com/substack/tape/) test harness. If you have Krishnan Anantheswaran's [istanbul](https://github.com/gotwarlost/istanbul/), or Jarrod Overson's [plato](https://github.com/jsoverson/plato) installed globally you can do these things too, respectively:
 
-        npm run-script cover
-        npm run-script plato
+    npm run-script cover
+    npm run-script plato
 
 license
 -------
