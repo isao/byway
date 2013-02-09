@@ -27,9 +27,9 @@ function makeout(names, vals) {
 
 function namer(route) {
     var pattern = route.pattern.replace(SYMBOLS, '\\$1');
-    function partnamer(ignored, type, name) {
+    function partnamer(ignored, spot_or_colon, name) {
         route.names.push(name);
-        return type === '•' ? SPOT_RE : NAME_RE;
+        return spot_or_colon === '•' ? SPOT_RE : NAME_RE;
     }
     return pattern.replace(NAME_ID, partnamer);
 }
@@ -40,7 +40,7 @@ function regexify(route) {
     if(pattern instanceof RegExp) { //possible pattern values:
         route.regex = pattern;      // 1. RegExp
                                     // 2. regex-route string
-    } else {                        // 3. name-route string
+    } else {                        // 3. name-route (or plain literal) string
         route.regex = new RegExp(route.isregex ? pattern : namer(route), 'i');
     }
 }
