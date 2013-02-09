@@ -50,9 +50,8 @@ test('unmatched :routes', function(t) {
     var config = [
             {"pattern": "/modules/:modname/:filename.json"},
             {"pattern": "/mojits/:mojitname/:controller.:affinity.js"}
-        ];
-
-    byway = new Byway(config);
+        ],
+        byway = new Byway(config);
 
     t.notok(byway.of('modules/mymod/config.json')); // missing ^/
     t.notok(byway.of('/mojits//ghi.jkl'));
@@ -61,7 +60,7 @@ test('unmatched :routes', function(t) {
 });
 
 test('match /modules/:modname/:filename.json', function(t) {
-    var config = [{"pattern": "/modules/:modname/:filename.json"}]
+    var config = [{"pattern": "/modules/:modname/:filename.json"}],
         byway = new Byway(config);
 
     t.ok(byway.of('abc/modules/mymod/config.json ohhai!'), 'match not $anchored');
@@ -73,7 +72,7 @@ test('match /modules/:modname/:filename.json', function(t) {
 });
 
 test('match anchored$ /modules/:modname/:filename.json$', function(t) {
-    var config = [{"pattern": "/modules/:modname/:filename.json$"}]
+    var config = [{"pattern": "/modules/:modname/:filename.json$"}],
         byway = new Byway(config);
 
     t.ok(byway.of('/modules/mymod/config.json'), 'match not ^anchored');
@@ -85,7 +84,7 @@ test('match anchored$ /modules/:modname/:filename.json$', function(t) {
 });
 
 test('match ^anchored ^/modules/:modname/:filename.json', function(t) {
-    var config = [{"pattern": "^/modules/:modname/:filename.json"}]
+    var config = [{"pattern": "^/modules/:modname/:filename.json"}],
         byway = new Byway(config);
 
     t.ok(byway.of('/modules/mymod/config.json ohhai!'), '^ but not $');
@@ -97,11 +96,23 @@ test('match ^anchored ^/modules/:modname/:filename.json', function(t) {
 });
 
 test('match ^anchored$ ^/modules/:modname/:filename.json$', function(t) {
-    var config = [{"pattern": "^/modules/:modname/:filename.json$"}]
+    var config = [{"pattern": "^/modules/:modname/:filename.json$"}],
         byway = new Byway(config);
 
     t.ok(byway.of('/modules/mymod/config.json'));
     t.notok(byway.of('abc/modules/mymod/config.json'));
     t.notok(byway.of('/modules/mymod/config.json/cheezits'));
+    t.end();
+});
+
+test('robots are coming', function(t) {
+    var config = [
+            {"pattern": "^/robots.txt$"},
+            {"pattern": "^/cache.manifest$"}
+        ],
+        byway = new Byway(config);
+
+    t.ok(byway.of('/robots.txt'));
+    t.ok(byway.of('/cache.manifest'));
     t.end();
 });
