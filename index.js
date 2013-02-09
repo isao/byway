@@ -40,7 +40,7 @@ function regexify(route) {
     if(pattern instanceof RegExp) { //possible pattern values:
         route.regex = pattern;      // 1. RegExp
                                     // 2. regex-route string
-    } else {                        // 3. name-route (or plain literal) string
+    } else {                        // 3. name-route string
         route.regex = new RegExp(route.isregex ? pattern : namer(route), 'i');
     }
 }
