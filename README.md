@@ -20,13 +20,11 @@ Here the value of `routes` is an array of objects, with the following properties
 * `isregex` - *optional* true if `pattern` is a string you want to convert to a regex
 * `param` - *optional* anything; this is returned as part of a match, if truthy.
 
-examples
---------
 Once you've created a `byway` object, determine if a string matches any of the `routes.pattern`s like:
 
     var match = byway.of(some_string);
 
-`match` is false if `some_string` wasn't matched by any `routes.pattern`s. Otherwise, the return value is an object with the following properties:
+If `some_string` wasn't matched by any `routes.pattern`s `match` is false. Otherwise, the return value is an object with the following properties:
 
 * `input` - the original string that was passed to of()
 * `param` - the value of the param property defined in the corresponding route
