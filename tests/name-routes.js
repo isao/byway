@@ -1,7 +1,29 @@
 var test = require('tape'),
     Byway = require('../');
 
-test('matches simple :names', function(t) {
+test(':names match complete filename', function(t) {
+    var config = [{"pattern": "/mojits/:mojitname/:file"}],
+        byway = new Byway(config),
+        uri = 'abc/mojits/foo/bar.js';
+
+    t.ok(byway.of(uri));
+    t.equal(byway.of(uri).parts.mojitname, 'foo');
+    t.equal(byway.of(uri).parts.file, 'bar.js');
+    t.end();
+});
+
+test(':names match filename without the ".js"', function(t) {
+    var config = [{"pattern": "/mojits/:mojitname/:file.js"}],
+        byway = new Byway(config),
+        uri = 'abc/mojits/foo/bar.js';
+
+    t.ok(byway.of(uri));
+    t.equal(byway.of(uri).parts.mojitname, 'foo');
+    t.equal(byway.of(uri).parts.file, 'bar');
+    t.end();
+});
+
+test(':names used to match mojito-style selectors', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:controller.:affinity.js"}],
         byway = new Byway(config);
 
@@ -11,6 +33,29 @@ test('matches simple :names', function(t) {
     t.ok(byway.of('/mojits/_/ghi.jkl.js'));
     t.end();
 });
+
+test(':names matches strings containing dots and dashes', function(t) {
+    var config = [{"pattern": "/mojits/:mojitname/:file.js"}],
+        uri = '/abc/def/mojits/foo-bar/b.a.z._server.js',
+        byway = new Byway(config);
+
+    t.ok(byway.of(uri));
+    t.equal(byway.of(uri).parts.mojitname, 'foo-bar');
+    t.equal(byway.of(uri).parts.file, 'b.a.z._server');
+    t.end();
+});
+
+test('matches partial :names separated by dots', function(t) {
+    var config = [{"pattern": "/mojits/:mojit.name/:file.server.js"}],
+        uri = '/abc/def/mojits/foo-bar.name/b.a.z-b_a_h.server.js',
+        byway = new Byway(config);
+
+    t.ok(byway.of(uri));
+    t.equal(byway.of(uri).parts.mojit, 'foo-bar');
+    t.equal(byway.of(uri).parts.file, 'b.a.z-b_a_h');
+    t.end();
+});
+
 
 test('match •name route (i.e. want a name to capture .+? not just \\w)', function(t) {
     var config = [{"pattern": "/archetype/•subpath/package.json"}],

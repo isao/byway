@@ -8,15 +8,15 @@
 
 var SYMBOLS = /([.+*(){}\[\]\/])/g, //escape .+*(){}[]/ in name patterns
     NAME_ID = /([:•])(\w+)/g,       //extract :names or *names from patterns
-    NAME_RE = '(\\w+)',             //for final regex, to use in place of :names
-    SPOT_RE = '(.+?)';              //for final regex, to use in place of •names
+    NAME_RE = '([\\w.-]+)',         //for final regex, to use in place of :names
+    SPOT_RE = '(\\S+)';             //for final regex, to use in place of •names
 
 
 function makeout(names, vals) {
     var out;
     if(names.length) {
         out = {};
-        names.forEach(function copy(name, i) {
+        names.forEach(function combine(name, i) {
             out[name] = vals[i];
         });
     } else { //no names, so pattern was a regex-route
