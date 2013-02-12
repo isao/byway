@@ -4,7 +4,10 @@ var test = require('tape'),
 test(':names match complete filename', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:file"}],
         byway = new Byway(config),
+
+        //     ___________   _       <- pattern literals
         uri = 'abc/mojits/foo/bar.js';
+        //                ^^^ ^^^^^^ <- named matches
 
     t.ok(byway.of(uri));
     t.equal(byway.of(uri).parts.mojitname, 'foo');
@@ -15,7 +18,9 @@ test(':names match complete filename', function(t) {
 test(':names match filename without the ".js"', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:file.js"}],
         byway = new Byway(config),
+        //     ___________   _   ___ <- pattern literals
         uri = 'abc/mojits/foo/bar.js';
+        //                ^^^ ^^^    <- named matches
 
     t.ok(byway.of(uri));
     t.equal(byway.of(uri).parts.mojitname, 'foo');
@@ -61,10 +66,12 @@ test('match •name route (i.e. want a name to capture .+? not just \\w)', funct
     var config = [{"pattern": "/archetype/•subpath/package.json"}],
         byway = new Byway(config);
 
+    //                              ____________<- pattern literal
     t.ok(byway.of('/archetype/a/b/c/package.json'));
     //                        ^^^^^ gets matched by name "•subpath"
     //                              returned object has parts.subpath:"a/b/c"
 
+    //                                       _____________<- pattern literal
     t.ok(byway.of('/archetype/abc%20def+123///package.json'));
     //                        ^^^^^^^^^^^^^^^ gets matched by name "•subpath"
     //                                        parts.subpath: "abc%20def+123//"
