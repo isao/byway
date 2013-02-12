@@ -41,16 +41,6 @@ test('parts is an array for regex-routes', function(t) {
 
     t.equal(actual.input, uri);
     t.same(actual.param, []);
-    t.end();
-});
-
-test('parts is an array for regex-routes', function(t) {
-    var config = [{pattern:'app\\/modules\\/(.+?)\\/(.+)$', isregex:1}],
-        byway = new Byway(config),
-        uri = '/proj/app/modules/foo/bar.js',
-        actual = byway.of(uri);
-
-    t.equal(actual.input, uri);
     t.same(actual.parts, ['foo', 'bar.js']);
     t.end();
 });
