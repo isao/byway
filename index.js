@@ -19,7 +19,7 @@ function makeout(names, vals) {
         names.forEach(function combine(name, i) {
             out[name] = vals[i];
         });
-    } else { //no names, so pattern was a regex-route
+    } else { //no names, so pattern was a regex-route; empty array if no parens
         out = vals.slice(0);
     }
     return out;

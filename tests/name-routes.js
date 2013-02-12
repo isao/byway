@@ -35,29 +35,34 @@ test(':names used to match mojito-style selectors', function(t) {
     t.ok(byway.of('abc/mojits/foo/foo.server.js'));
     t.ok(byway.of('/abc/def/mojits/foo/foo.server.js'));
     t.ok(byway.of('/mojits/foo/foo.server.js'));
+
+    //             ________ _       ___ <- pattern literals
     t.ok(byway.of('/mojits/_/ghi.jkl.js'));
+    //                     ^ ^^^^^^^ <- named matches
     t.end();
 });
 
 test(':names matches strings containing dots and dashes', function(t) {
     var config = [{"pattern": "/mojits/:mojitname/:file.js"}],
         uri = '/abc/def/mojits/foo-bar/b.a.z._server.js',
-        byway = new Byway(config);
+        byway = new Byway(config),
+        actual = byway.of(uri);
 
-    t.ok(byway.of(uri));
-    t.equal(byway.of(uri).parts.mojitname, 'foo-bar');
-    t.equal(byway.of(uri).parts.file, 'b.a.z._server');
+    t.ok(actual);
+    t.equal(actual.parts.mojitname, 'foo-bar');
+    t.equal(actual.parts.file, 'b.a.z._server');
     t.end();
 });
 
 test('matches partial :names separated by dots', function(t) {
     var config = [{"pattern": "/mojits/:mojit.name/:file.server.js"}],
         uri = '/abc/def/mojits/foo-bar.name/b.a.z-b_a_h.server.js',
-        byway = new Byway(config);
+        byway = new Byway(config),
+        actual = byway.of(uri);
 
-    t.ok(byway.of(uri));
-    t.equal(byway.of(uri).parts.mojit, 'foo-bar');
-    t.equal(byway.of(uri).parts.file, 'b.a.z-b_a_h');
+    t.ok(actual);
+    t.equal(actual.parts.mojit, 'foo-bar');
+    t.equal(actual.parts.file, 'b.a.z-b_a_h');
     t.end();
 });
 
@@ -73,7 +78,7 @@ test('match •name route (i.e. want a name to capture .+? not just \\w)', funct
 
     //                                       _____________<- pattern literal
     t.ok(byway.of('/archetype/abc%20def+123///package.json'));
-    //                        ^^^^^^^^^^^^^^^ gets matched by name "•subpath"
+    //                        ^^^^^^^^^^^^^^^ <- matched by name "•subpath"
     //                                        parts.subpath: "abc%20def+123//"
 
     t.end();
@@ -105,7 +110,7 @@ test('unmatched :routes', function(t) {
         ],
         byway = new Byway(config);
 
-    t.notok(byway.of('modules/mymod/config.json')); // missing ^/
+    t.notok(byway.of('modules/mymod/config.json')); // missing ^/, doesn't match
     t.notok(byway.of('/mojits//ghi.jkl'));
     t.notok(byway.of('/abc/def/ghi'));
     t.end();
