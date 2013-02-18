@@ -173,3 +173,14 @@ test('robots are coming', function(t) {
     t.ok(byway.of('/cache.manifest'));
     t.end();
 });
+
+test('tests/fixtures/newsboxes/mojits/Read/defaults.json', function(t) {
+    var config = [{"pattern": "/mojits/:mojit/:file.json$"}],
+        byway = new Byway(config),
+        uri = 'tests/fixtures/newsboxes/mojits/Read/defaults.json';
+
+    t.ok(byway.of(uri));
+    t.equal(byway.of(uri).parts.mojit, 'Read');
+    t.equal(byway.of(uri).parts.file, 'defaults');
+    t.end();
+});

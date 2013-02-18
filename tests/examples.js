@@ -18,7 +18,7 @@ test('named route', function(t) {
     t.end();
 });
 
-test('named spot route', function(t) {
+test('named spot route to match any non-space run of text', function(t) {
     var routes = [{pattern: '/abc/•mysubpath/:myfile.html'}],
         byway = new Byway(routes),
         match;
@@ -35,7 +35,7 @@ test('named spot route', function(t) {
     t.end();
 });
 
-test('string regex route', function(t) {
+test('string regex route, if you need to use json or love backslashes', function(t) {
     var routes = [{pattern: '\\/abc\\/def\\/(\\w+)/(\\w+)\\.html', isregex: true}],
         byway = new Byway(routes),
         match;
