@@ -53,8 +53,18 @@ function compile(route) {
     };
 }
 
+function hasPattern(route) {
+    return 'pattern' in route;
+}
+
 function Byway(routes) {
-    this.routes = routes.map(compile);
+    if(routes instanceof Array) {
+        this.routes = routes.filter(hasPattern).map(compile);
+    }
+
+    if(!this.routes || !this.routes.length) {
+        throw new Error('no valid routes');
+    }
 }
 
 Byway.prototype.of = function(str) {
