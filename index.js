@@ -38,7 +38,7 @@ function namer(nameroute, names) {
 function regexify(pattern, isregex, names) {
     return pattern instanceof RegExp ?
         //possible pattern values:
-        // 1. RegExp, 2. regex string, or 3. name-route string
+        // 1. RegExp, 2. regex string, or 3. name-route or plain string
         pattern : new RegExp(isregex ? pattern : namer(pattern, names), 'i');
 }
 
@@ -61,7 +61,6 @@ function Byway(routes) {
     if(routes instanceof Array) {
         this.routes = routes.filter(hasPattern).map(compile);
     }
-
     if(!this.routes || !this.routes.length) {
         throw new Error('no valid routes');
     }
