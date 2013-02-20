@@ -25,33 +25,36 @@ function makeout(names, vals) {
     return out;
 }
 
-function namer(route) {
-    var pattern = route.pattern.replace(SYMBOLS, '\\$1');
+//convert name-route to RegExp, accumulate names to recombine later w/makeout
+function namer(nameroute, names) {
+    var pattern = nameroute.replace(SYMBOLS, '\\$1');
     function partnamer(ignored, colon_or_spot, name) {
-        route.names.push(name);
+        names.push(name);
         return colon_or_spot === ':' ? NAME_RE : SPOT_RE;
     }
     return pattern.replace(NAME_ID, partnamer);
 }
 
-function regexify(route) {
-    var pattern = route.pattern;
-    route.names = []; //capture names; empty array signifies regex-route
-    if(pattern instanceof RegExp) { //possible pattern values:
-        route.regex = pattern;      // 1. RegExp
-                                    // 2. regex-route string
-    } else {                        // 3. name-route string
-        route.regex = new RegExp(route.isregex ? pattern : namer(route), 'i');
-    }
+function regexify(pattern, isregex, names) {
+    return pattern instanceof RegExp ?
+        //possible pattern values:
+        // 1. RegExp, 2. regex string, or 3. name-route string
+        pattern : new RegExp(isregex ? pattern : namer(pattern, names), 'i');
 }
 
-function compile(routes) {
-    routes.forEach(regexify); //todo: loop, validate/normalize, copy
-    return routes;
+function compile(route) {
+    var names = [],
+        regex = regexify(route.pattern, route.isregex, names);
+
+    return {
+        names: names,
+        regex: regex,
+        param: route.param || []
+    };
 }
 
 function Byway(routes) {
-    this.routes = compile(routes);
+    this.routes = routes.map(compile);
 }
 
 Byway.prototype.of = function(str) {
@@ -61,7 +64,7 @@ Byway.prototype.of = function(str) {
         if(found) {
             found = {
                 'input': found.input,
-                'param': route.param || [],
+                'param': route.param,
                 'parts': makeout(route.names, found.slice(1))
             };
             return true;
