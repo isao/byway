@@ -38,7 +38,7 @@ function namer(nameroute, names) {
 function regexify(pattern, isregex, names) {
     return pattern instanceof RegExp ?
         //possible pattern values:
-        // 1. RegExp, 2. regex string, or 3. name-route or plain string
+        // 1. RegExp, 2. regex string, or 3. string to convert to regex
         pattern : new RegExp(isregex ? pattern : namer(pattern, names), 'i');
 }
 
