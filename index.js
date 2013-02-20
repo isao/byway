@@ -54,7 +54,8 @@ function compile(route) {
 }
 
 function hasPattern(route) {
-    return 'pattern' in route;
+    return ('pattern' in route) &&
+        ('string' === typeof route.pattern || route.pattern instanceof RegExp);
 }
 
 function Byway(routes) {
