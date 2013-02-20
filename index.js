@@ -20,7 +20,7 @@ function makeout(names, vals) {
             out[name] = vals[i];
         });
     } else { //no names, so pattern was a regex-route; empty array if no parens
-        out = vals.slice(0);
+        out = vals;
     }
     return out;
 }
