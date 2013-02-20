@@ -86,7 +86,7 @@ test('param is copied from source configs, even if it’s a string', function(t)
 test('param is copied from source configs, even if it’s a function', function(t) {
 
     function square(num) {
-    	return num * num;
+        return num * num;
     }
 
     var config = [{pattern:'app/modules/:module/:file.:ext$', param:square}],
@@ -125,5 +125,36 @@ test('param is an array, if source config was falsey', function(t) {
     actual = byway.of(uri);
     t.same(actual.param, []);
 
+    t.end();
+});
+
+test('instantiating w/ a non-array throws', function(t) {
+
+    t.throws(function() {
+        byway = new Byway({});
+    });
+
+    t.throws(function() {
+        byway = new Byway(null);
+    });
+
+    t.throws(function() {
+        byway = new Byway(111111);
+    });
+
+    t.end();
+});
+
+
+test('instantiating without valid patterns throws', function(t) {
+    var config = [
+        {}, {pattern:null}, {pattern:0}, {pattern:-0}, {pattern:false}
+    ];
+
+    function thrower() {
+        byway = new Byway(config);
+    }
+
+    t.throws(thrower);
     t.end();
 });
