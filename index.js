@@ -7,7 +7,7 @@
 'use strict';
 
 var SYMBOLS = /([.+*(){}\[\]\/])/g, //escape .+*(){}[]/ in name patterns
-    NAME_ID = /([:•])(\w+)/g,       //extract :names or *names from patterns
+    NAME_ID = /([:•])(\w+)/g,       //extract :names or •names from patterns
     NAME_RE = '([\\w.-]+)',         //for final regex, to use in place of :names
     SPOT_RE = '(\\S+)';             //for final regex, to use in place of •names
 
