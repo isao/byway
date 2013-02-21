@@ -25,27 +25,26 @@ function makeout(names, vals) {
     return out;
 }
 
-//convert name-route to RegExp, accumulate names to recombine later w/makeout
+//convert string containing ":names" or "•names" to RegExp
 function namer(nameroute, names) {
     var pattern = nameroute.replace(SYMBOLS, '\\$1');
     function partnamer(ignored, colon_or_spot, name) {
-        names.push(name);
+        names.push(name); //save names to recombine later w/makeout
         return colon_or_spot === ':' ? NAME_RE : SPOT_RE;
     }
     return pattern.replace(NAME_ID, partnamer);
 }
 
 function regexify(pattern, isregex, names) {
+    //possible pattern values:
+    // 1. RegExp object, 2. regex string, or 3. string to regexify
     return pattern instanceof RegExp ?
-        //possible pattern values:
-        // 1. RegExp, 2. regex string, or 3. string to convert to regex
         pattern : new RegExp(isregex ? pattern : namer(pattern, names), 'i');
 }
 
 function compile(route) {
     var names = [],
         regex = regexify(route.pattern, route.isregex, names);
-
     return {
         names: names,
         regex: regex,
