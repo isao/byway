@@ -3,21 +3,22 @@
   "version": "0.0.2",
   "description": "yet another router; match a string by :sinatra/:express style named-params, or regex, and get something back.",
   "main": "index.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "tape": "~0.2.2"
+    "tap": "~0.4.0"
   },
   "scripts": {
-    "test": "tests/runner tests/*.js",
-    "cover": "istanbul cover --dir reports/coverage tests/runner tests/*.js",
+    "test": "tap tests",
+    "cover": "istanbul cover --dir reports/coverage tests",
     "plato": "plato -d reports/plato index.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com:isao/byway.git"
   },
-  "keywords": ["route"],
+  "keywords": [
+    "route"
+  ],
   "author": "Isao Yagi <isao@yahoo-inc.com>",
   "license": "MIT",
   "readmeFilename": "README.md"
