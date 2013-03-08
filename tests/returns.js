@@ -1,4 +1,4 @@
-var test = require('tap').test,
+var test = require('tape'),
     Byway = require('../');
 
 test('match •name route (i.e. want a name to capture .+? not just \\w)', function(t) {
