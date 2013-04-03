@@ -1,4 +1,4 @@
-var test = require('tape'),
+var test = require('tap').test,
     Byway = require('../');
 
 test('match regexes -- beware the crazy escaping!', function(t) {

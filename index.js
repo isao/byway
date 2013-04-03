@@ -45,6 +45,7 @@ function regexify(pattern, isregex, names) {
 function compile(route) {
     var names = [],
         regex = regexify(route.pattern, route.isregex, names);
+
     return {
         names: names,
         regex: regex,

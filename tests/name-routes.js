@@ -1,4 +1,4 @@
-var test = require('tape'),
+var test = require('tap').test,
     Byway = require('../');
 
 test(':names match complete filename', function(t) {

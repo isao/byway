@@ -1,4 +1,4 @@
-var test = require('tape'),
+var test = require('tap').test,
     Byway = require('../');
 
 test('named route', function(t) {

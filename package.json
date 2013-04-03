@@ -5,11 +5,11 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "tape": "~0.3.0"
+    "tap": "~0.4.1"
   },
   "scripts": {
-    "test": "tape tests/*.js",
-    "cover": "istanbul cover --dir artifacts/coverage node_modules/.bin/tape tests/*.js",
+    "test": "node tests",
+    "cover": "istanbul cover --dir artifacts/coverage tests",
     "plato": "plato -d artifacts/plato index.js"
   },
   "repository": {
