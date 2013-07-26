@@ -73,9 +73,14 @@ function Byway(routes) {
     }
 }
 
+/**
+ * @param {string} str
+ * @return {object|false}
+ */
 Byway.prototype.of = function(str) {
     var found = false;
-    function checkRoute(route) {
+
+    function match(route) {
         found = route.regex.exec(str);
         if(found) {
             found = {
@@ -86,7 +91,8 @@ Byway.prototype.of = function(str) {
             return true;
         }
     }
-    this.routes.some(checkRoute);
+
+    this.routes.some(match);
     return found;
 };
 
