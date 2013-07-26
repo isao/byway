@@ -58,7 +58,13 @@ function hasPattern(route) {
         ('string' === typeof route.pattern || route.pattern instanceof RegExp);
 }
 
+/**
+ * @param {array} routes
+ */
 function Byway(routes) {
+    if (!(this instanceof Byway)) {
+        return new Byway(routes);
+    }
     if(routes instanceof Array) {
         this.routes = routes.filter(hasPattern).map(compile);
     }
